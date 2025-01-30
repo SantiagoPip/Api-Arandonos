@@ -5,7 +5,7 @@ from flask_cors import CORS
 import io
 
 app = Flask(__name__)
-CORS(app, resources={r"/predict": {"origins": "*"}})
+CORS(app)
 
 # Cargar el modelo guardado
 model = keras.models.load_model('modelo_precision_acumulado.h5')
