@@ -1,1 +1,5 @@
-python-3.11.11
+Flask
+Flask-Cors
+tensorflow
+pandas
+openpyxl
