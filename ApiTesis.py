@@ -10,6 +10,10 @@ CORS(app)
 # Cargar el modelo guardado
 model = keras.models.load_model('modelo_precision_acumulado.h5')
 model.summary()
+@app.route('/',methods=['GET'] )
+def test():
+    print("Funcionando correctamente")
+    return jsonify({'message':'Funcionando Correctamente'},200)
 @app.route('/predict', methods=['POST'])
 def predict():
 
