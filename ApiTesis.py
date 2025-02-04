@@ -16,7 +16,7 @@ def test():
     return jsonify({'message':'Funcionando Correctamente'},200)
 @app.route('/predict', methods=['POST'])
 def predict():
-
+    print("iniciando la prediccion de datos...")
     # Verificar si el archivo fue enviado
     if 'file' not in request.files:
         return jsonify({'error': 'No se envió un archivo'}), 400
