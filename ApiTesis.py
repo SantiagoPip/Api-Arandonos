@@ -17,6 +17,7 @@ def test():
     return jsonify({'message':'Funcionando Correctamente'},200)
 @app.route('/predict', methods=['POST'])
 def predict():
+    print("Metodo post funcionando correctamente")
     return jsonify({'funcionando': 'funcionando correctamente'}), 400 
 
 # @app.route('/predict', methods=['POST'])
