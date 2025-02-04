@@ -18,7 +18,12 @@ def test():
 @app.route('/predict', methods=['POST'])
 def predict():
     print("Metodo post funcionando correctamente")
-    return jsonify({'funcionando': 'funcionando correctamente'}), 400 
+    print("iniciando la prediccion de datos...")
+#     Verificar si el archivo fue enviado
+    if 'file' not in request.files:
+         return jsonify({'error': 'No se envió un archivo'}), 400
+    file = request.files['file']
+    return jsonify({'funcionando': 'funcionando correctamente'}, 400)
 
 # @app.route('/predict', methods=['POST'])
 # def predict():
