@@ -8,7 +8,9 @@ app = Flask(__name__)
 CORS(app)
 
 # Cargar el modelo guardado
-model = keras.models.load_model('modelo_precision_acumulado.h5')
+model = keras.models.load_model('modelo_precision_acumulado.h5', compile=False)
+model.compile(optimizer='adam', loss='mse', metrics=['mae'])  # Reemplaza con tu configuración
+
 model.summary()
 @app.route('/',methods=['GET'] )
 def test():
