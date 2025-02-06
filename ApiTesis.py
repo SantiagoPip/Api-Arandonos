@@ -15,66 +15,66 @@ def test():
     print("Funcionando correctamente")
 
     return jsonify({'message':'Funcionando Correctamente'},200)
-@app.route('/predict', methods=['POST'])
-def predict():
-    print("Metodo post funcionando correctamente")
-    print("iniciando la prediccion de datos...")
-#     Verificar si el archivo fue enviado
-    if 'file' not in request.files:
-         return jsonify({'error': 'No se envió un archivo'}), 400
-    file = request.files['file']
-    return jsonify({'funcionando': 'funcionando correctamente'}, 400)
-
 # @app.route('/predict', methods=['POST'])
 # def predict():
+#     print("Metodo post funcionando correctamente")
 #     print("iniciando la prediccion de datos...")
-#     # Verificar si el archivo fue enviado
+# #     Verificar si el archivo fue enviado
 #     if 'file' not in request.files:
-#         return jsonify({'error': 'No se envió un archivo'}), 400
-
+#          return jsonify({'error': 'No se envió un archivo'}), 400
 #     file = request.files['file']
+#     return jsonify({'funcionando': 'funcionando correctamente'}, 400)
+
+@app.route('/predict', methods=['POST'])
+def predict():
+    print("iniciando la prediccion de datos...")
+    # Verificar si el archivo fue enviado
+    if 'file' not in request.files:
+        return jsonify({'error': 'No se envió un archivo'}), 400
+
+    file = request.files['file']
 
    
-#     try:
-#         # Leer el archivo Excel usando pandas
-#         df = pd.read_excel(file)
+    try:
+        # Leer el archivo Excel usando pandas
+        df = pd.read_excel(file)
     
-#         # Preprocesar los datos (asegúrate de que solo contengan columnas numéricas)
-#         # Reemplaza 'columnas_relevantes' con las columnas que tu modelo necesita
-#         columnas_relevantes = ['Variedad_B', ' mm Precipitation', ' m/s Gust Speed', 'IP', ' mm/h Max Precip Rate', 'Semana', 'Variedad_W', 'Variedad_V',' °C Air Temperature', 'PFIG','PFG','Variedad_L']  # Ejemplo de columnas necesarias
+        # Preprocesar los datos (asegúrate de que solo contengan columnas numéricas)
+        # Reemplaza 'columnas_relevantes' con las columnas que tu modelo necesita
+        columnas_relevantes = ['Variedad_B', ' mm Precipitation', ' m/s Gust Speed', 'IP', ' mm/h Max Precip Rate', 'Semana', 'Variedad_W', 'Variedad_V',' °C Air Temperature', 'PFIG','PFG','Variedad_L']  # Ejemplo de columnas necesarias
         
-#         missing_columns = [col for col in columnas_relevantes if col not in df.columns]
-#         if missing_columns:
-#             return jsonify({'error': f"Faltan las siguientes columnas en el archivo: {missing_columns}"}), 400
+        missing_columns = [col for col in columnas_relevantes if col not in df.columns]
+        if missing_columns:
+            return jsonify({'error': f"Faltan las siguientes columnas en el archivo: {missing_columns}"}), 400
 
     
-#         # Seleccionar solo las columnas necesarias
-#         input_data = df[columnas_relevantes]
+        # Seleccionar solo las columnas necesarias
+        input_data = df[columnas_relevantes]
     
-#         # Manejar valores faltantes (opcional: rellena con 0 o la media)
-#         input_data = input_data.fillna(0)
+        # Manejar valores faltantes (opcional: rellena con 0 o la media)
+        input_data = input_data.fillna(0)
     
-#         # Verifica que todas las columnas sean numéricas
-#         input_data = input_data.astype(float)
+        # Verifica que todas las columnas sean numéricas
+        input_data = input_data.astype(float)
     
-#         # Hacer predicciones con el modelo
-#         predictions = model.predict(input_data)
+        # Hacer predicciones con el modelo
+        predictions = model.predict(input_data)
     
-#         # Agregar las predicciones como una nueva columna en el DataFrame
-#         df['Predicciones'] = predictions.tolist()
+        # Agregar las predicciones como una nueva columna en el DataFrame
+        df['Predicciones'] = predictions.tolist()
     
-#         # Crear un archivo Excel en memoria con las predicciones añadidas
-#         output = io.BytesIO()
-#        # df.to_excel('mi_archivo_con_predicciones3.xlsx', index=False)
-#         df.to_excel(output, index=False)
+        # Crear un archivo Excel en memoria con las predicciones añadidas
+        output = io.BytesIO()
+       # df.to_excel('mi_archivo_con_predicciones3.xlsx', index=False)
+        df.to_excel(output, index=False)
         
-#         output.seek(0)  # Volver al principio del archivo en memoria
+        output.seek(0)  # Volver al principio del archivo en memoria
     
-#         # Devolver el archivo Excel con las predicciones al cliente
-#         return send_file(output, as_attachment=True, download_name="predicciones_con_resultados.xlsx", mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+        # Devolver el archivo Excel con las predicciones al cliente
+        return send_file(output, as_attachment=True, download_name="predicciones_con_resultados.xlsx", mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
     
-#     except Exception as e:
-#         return jsonify({'error': str(e)}), 500
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 import os
 
