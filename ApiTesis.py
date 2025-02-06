@@ -3,6 +3,7 @@ import pandas as pd
 from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 import io
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 app = Flask(__name__)
 CORS(app)
@@ -10,7 +11,6 @@ CORS(app)
 # Cargar el modelo guardado
 model = keras.models.load_model('modelo_precision_acumulado.h5', compile=False)
 model.compile(optimizer='adam', loss='mse', metrics=['mae'])  # Reemplaza con tu configuración
-
 model.summary()
 @app.route('/',methods=['GET'] )
 def test():
