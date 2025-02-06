@@ -2,6 +2,7 @@ from tensorflow import keras
 import pandas as pd
 from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
+import os
 import io
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
@@ -78,7 +79,7 @@ def predict():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-import os
+
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
