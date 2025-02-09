@@ -39,9 +39,10 @@ def predict():
 
    
     try:
+        print("iniciando en el try catch")
         # Leer el archivo Excel usando pandas
         df = pd.read_excel(file)
-    
+        print("ARCHIVO RECIBIDO Y LEIDO")
         # Preprocesar los datos (asegúrate de que solo contengan columnas numéricas)
         # Reemplaza 'columnas_relevantes' con las columnas que tu modelo necesita
         columnas_relevantes = ['Variedad_B', ' mm Precipitation', ' m/s Gust Speed', 'IP', ' mm/h Max Precip Rate', 'Semana', 'Variedad_W', 'Variedad_V',' °C Air Temperature', 'PFIG','PFG','Variedad_L']  # Ejemplo de columnas necesarias
