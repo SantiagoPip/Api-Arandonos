@@ -17,7 +17,7 @@ model.summary()
 def test():
     print("Funcionando correctamente")
 
-    return jsonify({'message':'Funcionando Correctamente'},200)
+    return jsonify({'message':'Funcionando Correctamente'}),200
 # @app.route('/predict', methods=['POST'])
 # def predict():
 #     print("Metodo post funcionando correctamente")
@@ -75,8 +75,8 @@ def predict():
     #     output.seek(0)  # Volver al principio del archivo en memoria
     
         # Devolver el archivo Excel con las predicciones al cliente
-        return send_file(file, as_attachment=True, download_name="predicciones_con_resultados.xlsx", mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-    
+        #return send_file(file, as_attachment=True, download_name="predicciones_con_resultados.xlsx", mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+        return send_file(file, as_attachment=True, download_name=file.filename, mimetype=file.content_type)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
