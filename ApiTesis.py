@@ -8,6 +8,8 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 app = Flask(__name__)
 CORS(app)
+UPLOAD_FOLDER = "uploads"
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)  # Asegura que la carpeta de uploads exista
 
 # Cargar el modelo guardado
 model = keras.models.load_model('modelo_precision_acumulado.h5', compile=False)
@@ -39,6 +41,8 @@ def predict():
 
    
     try:
+        file_path = os.path.join(UPLOAD_FOLDER, file.filename)
+        file.save(file_path)  # Guarda el archivo temporalmente
     #     print("iniciando en el try catch")
     #     # Leer el archivo Excel usando pandas
     #     df = pd.read_excel(file)
@@ -76,7 +80,7 @@ def predict():
     
         # Devolver el archivo Excel con las predicciones al cliente
         #return send_file(file, as_attachment=True, download_name="predicciones_con_resultados.xlsx", mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-        return send_file(file, as_attachment=True, download_name=file.filename, mimetype=file.content_type)
+        return send_file(file_path, as_attachment=True, download_name=file.filename, mimetype=file.content_type)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
