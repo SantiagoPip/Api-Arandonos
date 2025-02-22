@@ -4,3 +4,4 @@ tensorflow-cpu
 pandas
 openpyxl
 gunicorn
+scikit-learn
