@@ -4,13 +4,14 @@ from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 import os
 import io
+from sklearn.preprocessing import StandardScaler
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 app = Flask(__name__)
 CORS(app)
 UPLOAD_FOLDER = "uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)  # Asegura que la carpeta de uploads exista
-
+scaler = StandardScaler()
 # Cargar el modelo guardado
 model = keras.models.load_model('modelo_precision_acumulado.h5', compile=False)
 model.compile(optimizer='adam', loss='mse', metrics=['mae'])  # Reemplaza con tu configuración
@@ -43,6 +44,7 @@ def predict():
     try:
         file_path = os.path.join(UPLOAD_FOLDER, file.filename)
         file.save(file_path)  # Guarda el archivo temporalmente
+        columnas_ambientales = [' mm Precipitation', ' m/s Gust Speed', ' mm/h Max Precip Rate', ' °C Air Temperature']
         print("Archivo guardado en:", file_path)
 
         # Leer el archivo Excel usando pandas
@@ -65,6 +67,7 @@ def predict():
 
         # Manejar valores faltantes (rellena con 0)
         input_data = input_data.fillna(0)
+        #input_data[columnas_ambientales] = scaler.fit_transform(df[columnas_ambientales])
 
         # Verifica que todas las columnas sean numéricas
         input_data = input_data.astype(float)
@@ -78,7 +81,8 @@ def predict():
 
         # Agregar las predicciones como una nueva columna en el DataFrame
         df['Predicciones'] = predictions.tolist()
-
+        df['Predicciones'] = [str(int(pred))[:2] for pred in predictions.flatten()]
+# Asegura que sea un array unidimensional
         # Crear un archivo Excel en memoria con las predicciones añadidas
         output = io.BytesIO()
         df.to_excel(output, index=False)
@@ -88,6 +92,7 @@ def predict():
         return send_file(output, as_attachment=True, download_name="predicciones_con_resultados.xlsx", mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 
     except Exception as e:
+        print("ERROR:", str(e))  # Agrega esta línea
         return jsonify({'error': f"Ocurrió un error al procesar el archivo: {str(e)}"}), 500
 
     finally:
